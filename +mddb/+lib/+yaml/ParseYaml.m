@@ -18,25 +18,6 @@ function yamlOut = ParseYaml(yamlIn,makeords,dictionary)
     % - ((struct) dictionary
     %
 
-    % tries to import yaml java library
-    try
-        % import yaml java library
-        import('org.yaml.snakeyaml.*');
-        javaObject('Yaml');
-    catch
-        % no luck
-        % find full path of this yaml library
-        [pth,~,~] = fileparts(mfilename('fullpath'));       
-        % build path to jar library
-        dp = [pth filesep 'external' filesep 'snakeyaml-1.9.jar'];
-        if not(ismember(dp, javaclasspath ('-dynamic')))
-            % add path to java library
-        	javaaddpath(dp); % javaaddpath clears global variables...!?
-        end
-        % import java library
-        import('org.yaml.snakeyaml.*');
-    end; % try/catch
-    
     % instantiate yaml java object
     yaml = org.yaml.snakeyaml.Yaml(); % It appears that Java objects cannot be persistent...!?
     % load our yaml in the instance

@@ -62,5 +62,5 @@ function result = ReadYaml(filename, nosuchfileaction, makeords, treatasdata, di
     end;
     
     result = ry;
-    clear global nsfe;
+    clearvars -global nsfe;
 end

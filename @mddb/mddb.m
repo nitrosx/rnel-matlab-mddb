@@ -25,6 +25,34 @@ classdef mddb
     %
     methods (Static = true)
         %
+        function init()
+            % function init()
+            %
+            % initialize the mddb api class
+            % most important load some of the java library upfront
+            % to avoid running javaaddpath while being used
+            % apparently javaaddpath clear all the global variables
+            % screwing up our setup and data loaded in memory
+            
+            try
+                % import yaml java library
+                import('org.yaml.snakeyaml.*');
+                test = javaObject('org.yaml.snakeyaml.Yaml');
+            catch
+                % no luck
+                % find full path of this yaml library
+                [path,~,~] = fileparts(mfilename('fullpath'));       
+                % build path to jar library
+                jarpath = [path filesep 'external' filesep 'snakeyaml-1.9.jar'];
+                if not(ismember(jarpath, javaclasspath ('-dynamic')))
+                    % add path to java library
+                	javaaddpath(jarpath); % javaaddpath clears global variables...!?
+                end
+                % import java library
+                import('org.yaml.snakeyaml.*');
+            end; % try/catch            
+        end %function
+        %
         function url = url(which)
             % function url = mddb.url(which)
             %
